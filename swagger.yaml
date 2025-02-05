@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: Jobs API
+  contact: {}
+  version: 1.0.0
+servers:
+  - url: https://jobs-api-catf.onrender.com/api/v1/
+tags:
+  - name: Auth
+    description: Authentication routes
+  - name: Jobs
+    description: Jobs routes
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  example: john.doe@email.com
+                password:
+                  type: string
+                  example: secret
+      responses:
+        '201':
+          description: User registered successfully
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: john.doe@email.com
+                password:
+                  type: string
+                  example: secret
+      responses:
+        '200':
+          description: User logged in successfully
+
+  /jobs:
+    post:
+      tags:
+        - Jobs
+      summary: Create a new job
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company:
+                  type: string
+                  example: random
+                position:
+                  type: string
+                  example: unexisting position
+      responses:
+        '201':
+          description: Job created successfully
+    get:
+      tags:
+        - Jobs
+      summary: Get all jobs
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of jobs
+
+  /jobs/{id}:
+    get:
+      tags:
+        - Jobs
+      summary: Get a single job
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job details
+    patch:
+      tags:
+        - Jobs
+      summary: Update a job
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company:
+                  type: string
+                  example: amazon
+                position:
+                  type: string
+                  example: ux/ui designer
+      responses:
+        '200':
+          description: Job updated successfully
+    delete:
+      tags:
+        - Jobs
+      summary: Delete a job
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Job deleted successfully
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
