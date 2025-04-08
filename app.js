@@ -29,12 +29,11 @@ const jobsRouter = require('./routes/jobs');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
+// extra packages
 app.use(express.static(path.resolve(__dirname, './client/build')));
 app.use(express.json());
-
-// extra packages
-app.use(express.json());
 app.use(helmet());
+
 app.use(xss());
 
 app.get('/', (req, res) => {
@@ -53,7 +52,7 @@ app.get('*', (req, res) => {
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 const start = async () => {
   try {
