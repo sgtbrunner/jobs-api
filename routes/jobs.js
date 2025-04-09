@@ -7,9 +7,11 @@ const {
   createJob,
   updateJob,
   deleteJob,
+  showStats,
 } = require('../controllers/jobs');
 
 router.route('/').get(getAllJobs).post(testUser, createJob);
+router.route('/stats').get(showStats);
 router
   .route('/:id')
   .get(getJob)
